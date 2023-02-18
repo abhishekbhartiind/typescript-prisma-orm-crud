@@ -23,9 +23,37 @@ app.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 })
 
+// Create Mutliple Users at once
+app.post(
+  "/createMultipleUser",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userList } = req.body
+      const users = await prisma.user.createMany({ data: userList })
+      res.json(users)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+// Create Mutliple Users at once
+app.post(
+  "/createManyCars",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { carLists } = req.body
+      const cars = await prisma.car.createMany({ data: carLists })
+      res.json(cars)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 // GET
 app.get("/", async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany()
+  const users = await prisma.user.findMany({ include: { cars: true } })
   res.json(users)
 })
 
