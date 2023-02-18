@@ -29,6 +29,18 @@ app.get("/", async (req: Request, res: Response) => {
   res.json(users)
 })
 
+// Search with ID
+app.get("/user/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+  const user = await prisma.user.findUnique({
+    where: {
+      id: Number(id),
+    },
+  })
+
+  res.json(user)
+})
+
 // PUT
 app.put("/", async (req: Request, res: Response) => {
   const { id, username } = req.body
